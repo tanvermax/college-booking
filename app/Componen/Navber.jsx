@@ -10,8 +10,8 @@ const Navbar = () => {
     const toggleMenu = () => setIsOpen(!isOpen);
 
     return (
-        <nav className="bg-white shadow-md px-4 py-3">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <nav className="bg-white shadow-md px-4 py-5">
+            <div className="w-11/12 mx-auto flex items-center justify-between">
                 {/* Left - Logo */}
                 <div className="flex items-center space-x-2">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,11 +29,11 @@ const Navbar = () => {
                 </div>
 
                 {/* Center - Navigation Links (Desktop) */}
-                <div className="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
+                <div className="hidden md:flex items-center space-x-10 text-base font-medium text-gray-700">
                     <a href="#">Home</a>
                     <a href="#">Colleges</a>
                     <a href="#">Admissions</a>
-                    <a href="#">Events</a>
+                    <a href="#">My College</a>
                     <a href="#">Research</a>
                     <a href="#">Reviews</a>
                 </div>
@@ -72,7 +72,7 @@ const Navbar = () => {
                     <a href="#" className="block">Home</a>
                     <a href="#" className="block">Colleges</a>
                     <a href="#" className="block">Admissions</a>
-                    <a href="#" className="block">Events</a>
+                    <a href="#" className="block">My College</a>
                     <a href="#" className="block">Research</a>
                     <a href="#" className="block">Reviews</a>
                     <div className="flex items-center space-x-2 mt-2">

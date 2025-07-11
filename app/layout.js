@@ -2,6 +2,8 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Componen/Navber";
 
+import Footer from "./Componen/Footer";
+
 
 
 export const metadata = {
@@ -21,7 +23,9 @@ export default function RootLayout({ children }) {
         className={plusJakartaSans.className}
       >
         <Navbar/>
+        
         {children}
+        <Footer/>
       </body>
     </html>
   );
