@@ -1,6 +1,6 @@
 "use client";
 
-import {  createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { auth } from "@/lib/firebase.init";
 import { useState } from "react";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export default function RegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-  
+
     try {
       // Create user in Firebase first
       const userCredential = await createUserWithEmailAndPassword(
@@ -30,11 +30,12 @@ export default function RegisterPage() {
       );
       const user = userCredential.user;
       console.log("User registered:", user);
-  
+
       // Send verification email
       await sendEmailVerification(user);
       console.log("Verification email sent");
-  
+      localStorage.setItem("registrationData", JSON.stringify(formData));
+
       // Save user data to your backend
       const response = await axios.post("/api/college", {
         ...formData,
@@ -127,6 +128,7 @@ export default function RegisterPage() {
             Login
           </Link>
         </p>
+        
       </div>
     </section>
   );

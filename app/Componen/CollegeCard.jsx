@@ -1,8 +1,18 @@
 "use client";
 import React from "react";
 import colleges from "../data/collgesData";
+import { useRouter } from "next/navigation";
 
 const CollegeCard = () => {
+
+    const router = useRouter();
+
+
+    const handledetails = (college) => {
+        if (college) {
+            router.push(`/collegedetails/${college.id}`);
+        }
+    };
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-10/12 mx-auto py-8">
             {colleges.map((college) => (
@@ -19,7 +29,7 @@ const CollegeCard = () => {
                         </ul>
                         <p className="mt-2 text-sm text-gray-600"><strong>Research:</strong> {college.researchHistory}</p>
                         <p className="mt-2 text-sm text-gray-600"><strong>Sports:</strong> {college.sports.join(", ")}</p>
-                        <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        <button onClick={() => handledetails(college)} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                             Details
                         </button>
                     </div>

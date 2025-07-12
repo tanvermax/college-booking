@@ -1,14 +1,77 @@
 'use client';
 
-import { useState } from 'react';
-import { FaSearch, FaUniversity } from 'react-icons/fa';
+
+import { auth, firestore } from '@/lib/firebase.init';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
+
+import { useEffect, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 import { HiMenu, HiX } from 'react-icons/hi';
 
+
 const Navbar = () => {
+
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
+    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleMenu = () => setIsOpen(!isOpen);
 
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                if (user.emailVerified) {
+                    const userDoc = await getDoc(doc(firestore, "users", user.uid));
+                    console.log("userDoc.exists()", userDoc.exists())
+                    if (!userDoc.exists()) {
+                        const registrationData = localStorage.getItem("registrationData");
+                        const {
+                            name = "",
+                            email = "",
+                            password = "",
+                            dueDate = ""
+                        } = registrationData ? JSON.parse(registrationData) : {};
+                        await setDoc(doc(firestore, "users", user.uid), {
+                            name,
+                            email: user.email,
+                            password,
+                            dueDate: dueDate || null,
+                        });
+                        localStorage.removeItem("registrationData");
+                        console.log("User data saved to Firestore:", user.uid);
+                    }
+                    setUser(user);
+                    setLoading(false);
+
+                }
+                else {
+                    setUser(null);
+                    router.push("/login");
+                }
+            }
+            else {
+                setUser(null);
+                setLoading(false);
+                router.push("/login");
+            }
+            setLoading(false);
+        });
+        return () => unsubscribe();
+
+    }, [router])
+    console.log("user from home ", user)
+
+
+
+ const handleProfileClick = () => {
+        if (user) {
+            router.push(`/profile/${user.uid}`);
+        }
+    };
     return (
         <nav className="bg-white shadow-md px-4 py-5">
             <div className="w-11/12 mx-auto flex items-center justify-between">
@@ -30,32 +93,39 @@ const Navbar = () => {
 
                 {/* Center - Navigation Links (Desktop) */}
                 <div className="hidden md:flex items-center space-x-10 text-base font-medium text-gray-700">
-                    <a href="#">Home</a>
-                    <a href="#">Colleges</a>
-                    <a href="#">Admissions</a>
-                    <a href="#">My College</a>
+                    <a href="/">Home</a>
+                    <a href="college">Colleges</a>
+                    <a href="admission">Admissions</a>
+                    <a href="">My College</a>
                     <a href="#">Research</a>
                     <a href="#">Reviews</a>
                 </div>
 
                 {/* Right - Search, Button, Avatar */}
                 <div className="hidden md:flex items-center space-x-4">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="bg-gray-100 pl-8 pr-3 py-1.5 rounded-md focus:outline-none text-sm"
-                        />
-                        <FaSearch className="absolute left-2 top-2 text-gray-400 text-sm" />
-                    </div>
-                    <button className="bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm hover:bg-blue-700">
-                        Apply Now
-                    </button>
-                    <img
-                        src="https://i.pravatar.cc/32"
-                        alt="Profile"
-                        className="w-8 h-8 rounded-full object-cover"
-                    />
+
+                    {
+                        user ?
+                            <>
+                                <button onClick={handleProfileClick} className="btn text-[5px]">{user.email}</button>
+                                
+                            </>
+                            :
+                            loading ?
+                                <div className="flex items-center justify-center">
+                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+                                </div>
+                                :
+                                <div className="flex items-center justify-center ">
+                                    <button
+                                        onClick={() => router.push("/login")}
+                                        className="bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm hover:bg-blue-700"
+                                    >
+                                        Login
+                                    </button>
+                                </div>
+                    }
+
                 </div>
 
                 {/* Mobile Hamburger */}
@@ -69,9 +139,9 @@ const Navbar = () => {
             {/* Mobile Menu */}
             {isOpen && (
                 <div className="md:hidden mt-3 space-y-2 text-sm font-medium text-gray-700">
-                    <a href="#" className="block">Home</a>
-                    <a href="#" className="block">Colleges</a>
-                    <a href="#" className="block">Admissions</a>
+                    <a href="/" className="block">Home</a>
+                    <a href="college" className="block">Colleges</a>
+                    <a href="admission" className="block">Admissions</a>
                     <a href="#" className="block">My College</a>
                     <a href="#" className="block">Research</a>
                     <a href="#" className="block">Reviews</a>
