@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    university: { type: String, trim: true },
+    address: { type: String, trim: true },
     email: {
         type: String,
         required: true,
@@ -24,7 +26,7 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-    
+
 })
 
 const User = mongoose.models.User || mongoose.model("User", UserSchema);

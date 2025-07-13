@@ -50,7 +50,7 @@ const AdmissionPage = () => {
   };
 
   return (
-    <div className="max-w-7xl h-[80vh] mx-auto px-4 py-12">
+    <div className="max-w-7xl min-h-[80vh] mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-center mb-8">College Admission Portal</h1>
 
       {!selectedCollege ? (
