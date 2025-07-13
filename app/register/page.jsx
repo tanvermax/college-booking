@@ -7,11 +7,14 @@ import Link from "next/link";
 import axios from "axios";
 
 export default function RegisterPage() {
+
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-
+    university: "",
+    address: "",
   });
 
   const handleChange = (e) => {
@@ -30,10 +33,12 @@ export default function RegisterPage() {
       );
       const user = userCredential.user;
       console.log("User registered:", user);
+      console.log(formData)
 
       // Send verification email
       await sendEmailVerification(user);
       console.log("Verification email sent");
+      alert(`Verification email sent to ${formData.email}. Please check your inbox(also spam folder).`);
       localStorage.setItem("registrationData", JSON.stringify(formData));
 
       // Save user data to your backend
@@ -99,20 +104,37 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-              Confirm Password
+          <div>
+            <label htmlFor="university" className="block text-sm font-medium text-gray-700">
+              University/College
             </label>
             <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
+              type="text"
+              id="university"
+              name="university"
               required
-              value={formData.confirmPassword}
+              value={formData.university}
               onChange={handleChange}
-              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 text-gray-800 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your university name"
             />
-          </div> */}
+          </div>
+
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+              Address
+            </label>
+            <textarea
+              id="address"
+              name="address"
+              required
+              value={formData.address}
+              onChange={handleChange}
+              className="w-full mt-1 text-gray-800 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows="3"
+              placeholder="Enter your full address including city and country"
+            ></textarea>
+          </div>
 
           <button
             type="submit"
@@ -121,6 +143,7 @@ export default function RegisterPage() {
             Register
           </button>
         </form>
+        
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{" "}
@@ -128,7 +151,6 @@ export default function RegisterPage() {
             Login
           </Link>
         </p>
-        
       </div>
     </section>
   );
