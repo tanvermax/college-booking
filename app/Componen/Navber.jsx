@@ -97,8 +97,8 @@ const Navbar = () => {
                     <a href="/college">Colleges</a>
                     <a href="/admission">Admissions</a>
                     <a href="/mycollege">My College</a>
-                    <a href="#">Research</a>
-                    <a href="#">Reviews</a>
+                    <a href="/research">Research</a>
+                    <a href="/reviews">Reviews</a>
                 </div>
 
                 {/* Right - Search, Button, Avatar */}
@@ -143,8 +143,8 @@ const Navbar = () => {
                     <a href="/college" className="block">Colleges</a>
                     <a href="/admission" className="block">Admissions</a>
                     <a href="/mycollege" className="block">My College</a>
-                    <a href="#" className="block">Research</a>
-                    <a href="#" className="block">Reviews</a>
+                    <a href="/research" className="block">Research</a>
+                    <a href="/reviews" className="block">Reviews</a>
                     <div className="flex items-center space-x-2 mt-2">
                         <div className="relative flex-1">
                             <input
