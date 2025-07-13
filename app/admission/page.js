@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import colleges from '../data/collge';
+import axios from 'axios';
 
 const AdmissionPage = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const AdmissionPage = () => {
     phone: '',
     address: '',
     dob: '',
-    image: null
+   
   });
 
   const handleCollegeSelect = (college) => {
@@ -34,25 +35,36 @@ const AdmissionPage = () => {
     console.log('Applying to:', selectedCollege.name);
     console.log('Form data:', formData);
     alert(`Application submitted to ${selectedCollege.name}!`);
-    router.push('/');
+
+    axios.post('/api/apply', formData)
+      .then(response => {
+        console.log('Application successful:', response.data);
+        alert('Application submitted successfully!');
+        router.push('/'); // Redirect to home or another page after submission
+      })
+      .catch(error => {
+        console.log('Error submitting application:', error);
+        alert('Failed to submit application. Please try again later.');
+      });
+
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="max-w-7xl h-[80vh] mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-center mb-8">College Admission Portal</h1>
-      
+
       {!selectedCollege ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <h2 className="col-span-full text-xl font-semibold mb-4">Select a College to Apply</h2>
           {colleges.map(college => (
-            <div 
+            <div
               key={college.id}
               onClick={() => handleCollegeSelect(college)}
               className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition"
             >
               <div className="flex items-center space-x-4">
-                <img 
-                  src={college.image} 
+                <img
+                  src={college.image}
                   alt={college.name}
                   className="w-16 h-16 object-cover rounded"
                 />
@@ -65,11 +77,11 @@ const AdmissionPage = () => {
           ))}
         </div>
       ) : (
-        <div className="max-w-2xl mx-auto bg-white text-g p-5">
-            
+        <div className="max-w-2xl mx-auto bg-white text-g p-5 text-gray-900">
+
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">Application to {selectedCollege.name}</h2>
-            <button 
+            <button
               onClick={() => setSelectedCollege(null)}
               className="text-blue-600 hover:underline"
             >
@@ -155,7 +167,7 @@ const AdmissionPage = () => {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Passport Photo</label>
                 <input
                   type="file"
@@ -165,7 +177,7 @@ const AdmissionPage = () => {
                   accept="image/*"
                   required
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="pt-4">

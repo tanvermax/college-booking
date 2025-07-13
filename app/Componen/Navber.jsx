@@ -94,9 +94,9 @@ const Navbar = () => {
                 {/* Center - Navigation Links (Desktop) */}
                 <div className="hidden md:flex items-center space-x-10 text-base font-medium text-gray-700">
                     <a href="/">Home</a>
-                    <a href="college">Colleges</a>
-                    <a href="admission">Admissions</a>
-                    <a href="">My College</a>
+                    <a href="/college">Colleges</a>
+                    <a href="/admission">Admissions</a>
+                    <a href="/mycollege">My College</a>
                     <a href="#">Research</a>
                     <a href="#">Reviews</a>
                 </div>
@@ -140,9 +140,9 @@ const Navbar = () => {
             {isOpen && (
                 <div className="md:hidden mt-3 space-y-2 text-sm font-medium text-gray-700">
                     <a href="/" className="block">Home</a>
-                    <a href="college" className="block">Colleges</a>
-                    <a href="admission" className="block">Admissions</a>
-                    <a href="#" className="block">My College</a>
+                    <a href="/college" className="block">Colleges</a>
+                    <a href="/admission" className="block">Admissions</a>
+                    <a href="/mycollege" className="block">My College</a>
                     <a href="#" className="block">Research</a>
                     <a href="#" className="block">Reviews</a>
                     <div className="flex items-center space-x-2 mt-2">

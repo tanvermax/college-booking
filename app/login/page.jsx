@@ -38,7 +38,7 @@ export default function LoginPage() {
           password,
         })
         setSuccess("Login successful! Redirecting...");
-        router.push("/dashboard"); // Redirect to dashboard
+        router.push("/"); // Redirect to dashboard
         // router.push("/dashboard"); // Redirect to dashboard
       } else {
         setError("No user data found. Please verify  first.");

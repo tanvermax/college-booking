@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./Componen/Navber";
 
 import Footer from "./Componen/Footer";
+import { UserProvider } from "./context/UserContext";
 
 
 
@@ -19,13 +20,15 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
+      <body cz-shortcut-listen="true"
         className={plusJakartaSans.className}
       >
-        <Navbar/>
-        
-        {children}
-        <Footer/>
+        <UserProvider>
+          <Navbar />
+
+          {children}
+          <Footer />
+        </UserProvider>
       </body>
     </html>
   );

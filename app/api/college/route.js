@@ -7,6 +7,7 @@ import User from "@/models/User";
 // Fix import path
 
 export async function POST(req) {
+  
   console.log("POST request received");
 
   try {
@@ -59,13 +60,14 @@ export async function POST(req) {
 
 export async function GET(req, { params }) {
   try {
-    await connectiontoDatabase();
-    console.log(params, "params in GET request");
-    console.log(params?.id)
+    const { searchParams } = new URL(req.url);
+    const email = searchParams.get('email');
     
-    // If ID parameter exists (dynamic route)
-    if (params?.id) {
-      const user = await User.findById(params.id);
+    await connectiontoDatabase();
+
+    // If email parameter exists
+    if (email) {
+      const user = await User.findOne({ email }).select('-password'); // Exclude password
       if (!user) {
         return NextResponse.json(
           { success: false, message: 'User not found' },
@@ -77,14 +79,29 @@ export async function GET(req, { params }) {
         { status: 200 }
       );
     }
-    // If no ID parameter (base route)
-    else {
-      const users = await User.find({});
+    
+    // If ID parameter exists (dynamic route)
+    if (params?.id) {
+      const user = await User.findById(params.id).select('-password');
+      if (!user) {
+        return NextResponse.json(
+          { success: false, message: 'User not found' },
+          { status: 404 }
+        );
+      }
       return NextResponse.json(
-        { success: true, data: users },
+        { success: true, data: user },
         { status: 200 }
       );
     }
+    
+    // If no parameters (get all users)
+    const users = await User.find({}).select('-password');
+    return NextResponse.json(
+      { success: true, data: users },
+      { status: 200 }
+    );
+    
   } catch (error) {
     console.error("Error fetching user data:", error);
     return NextResponse.json(

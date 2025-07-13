@@ -12,6 +12,7 @@
     "axios": "^1.10.0",
     "daisyui": "^5.0.46",
     "firebase": "^11.10.0",
+    "framer-motion": "^12.23.3",
     "mongodb": "^6.17.0",
     "mongoose": "^8.16.3",
     "next": "15.3.5",
