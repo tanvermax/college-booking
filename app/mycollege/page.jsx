@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useUser } from '../context/UserContext';
 
 export default function MyCollege() {
     const [collegeData, setCollegeData] = useState([]);
+    const [filteredCollegeData, setFilteredCollegeData] = useState([]);
     const [review, setReview] = useState({ rating: 5, comment: '' });
     const [isLoading, setIsLoading] = useState(true);
+    const { user, loading: userLoading } = useUser(); // Get user from your context
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,6 +19,14 @@ export default function MyCollege() {
 
                 if (response.data.success) {
                     setCollegeData(response.data.data);
+                    
+                    // Filter data based on user's email only if user is available
+                    if (user && user.email) {
+                        const filtered = response.data.data.filter(
+                            college => college.email === user.email
+                        );
+                        setFilteredCollegeData(filtered);
+                    }
                 } else {
                     console.error("Failed to fetch college data:", response.data.error);
                 }
@@ -26,12 +37,15 @@ export default function MyCollege() {
             }
         };
 
-        fetchData();
-    }, []);
+        // Only fetch data if user is not loading
+        if (!userLoading) {
+            fetchData();
+        }
+    }, [user, userLoading]); // Add user and userLoading to dependency array
+
     const handleReviewSubmit = async (e, college) => {
         e.preventDefault();
       
-        
         try {
             const response = await axios.post('/api/review', {
                 rating: review.rating,
@@ -50,29 +64,39 @@ export default function MyCollege() {
                         : c
                 ));
                 
+                // Also update filtered data
+                setFilteredCollegeData(prev => prev.map(c => 
+                    c._id === college._id 
+                        ? { 
+                            ...c, 
+                            reviews: [...(c.reviews || []), response.data.data.review] 
+                          } 
+                        : c
+                ));
+                
                 setReview({ rating: 5, comment: '' });
                 alert('Review submitted successfully!');
                 console.log("Review submitted:", response.data.data.review);
             } else {
-                setError(response.data.error || "Failed to submit review");
+                console.error("Failed to submit review:", response.data.error);
             }
         } catch (error) {
             console.error("Error submitting review:", error);
-            setError(error.response?.data?.error || error.message);
         } finally {
             setIsLoading(false);
         }
     };
 
-    if (isLoading) return <div className="text-center py-8">Loading...</div>;
-    if (!collegeData || collegeData.length === 0) return <div className="text-center py-8">No college data found</div>;
+    if (userLoading || isLoading) return <div className="text-center py-8">Loading...</div>;
+    if (!user) return <div className="text-center py-8">Please login to view your college applications</div>;
+    if (!filteredCollegeData || filteredCollegeData.length === 0) return <div className="text-center py-8">No college applications found for your account</div>;
 
     return (
         <div className="max-w-4xl mx-auto py-8 px-4">
             <h1 className="text-3xl font-bold mb-6">My College Application</h1>
 
             <div className="space-y-6">
-                {collegeData.map((college, index) => (
+                {filteredCollegeData.map((college, index) => (
                     <div key={college._id || index} className="border rounded-lg overflow-hidden">
                         <div className="p-6 bg-zinc-700">
                             <h2 className="text-xl font-semibold mb-4">Application Details</h2>
