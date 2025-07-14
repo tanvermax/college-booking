@@ -126,6 +126,10 @@ export default function MyCollege() {
                                     <p className="font-medium">Date of Birth:</p>
                                     <p>{new Date(college.dob).toLocaleDateString()}</p>
                                 </div>
+                                <div>
+                                    <p className="font-medium">college</p>
+                                    <p>{college.college? college.college : "no college selected"} </p>
+                                </div>
                             </div>
                         </div>
 

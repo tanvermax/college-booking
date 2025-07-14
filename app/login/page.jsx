@@ -143,8 +143,8 @@ export default function LoginPage() {
         </div>
 
         <div className="mt-4 flex justify-center gap-4">
-          <button onClick={handlegooglelogin} className="px-4 py-2 border rounded-md hover:bg-gray-100">Google</button>
-          <button className="px-4 py-2 border rounded-md hover:bg-gray-100">Facebook</button>
+          <button onClick={handlegooglelogin} className="px-4 py-2 border text-amber-600 rounded-md hover:bg-gray-100">Google</button>
+          <button className="px-4 py-2 border rounded-md hover:bg-gray-100 text-amber-600">Facebook</button>
         </div>
         {error && <p className="text-red-500 text-center mt-4">{error}</p>}
         {success && <p className="text-green-500 text-center mt-4">{success}</p>}

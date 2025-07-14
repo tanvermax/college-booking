@@ -21,6 +21,10 @@ const CollegeSchema = new mongoose.Schema({
         trype: Number,
     }
     ,
+    college: {
+        type: String,
+        
+    },
     address: {
         type: String,
         trim: true
@@ -48,7 +52,10 @@ const CollegeSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         }
-    }]
+    },
+
+    ],
+   
 
 }, { timestamps: true })
 

@@ -9,15 +9,15 @@ export async function POST(req) {
     try {
         await connectiontoDatabase();
 
-        const { name, subject, email, phone, address, dob } = await req.json();
-        if (!name || !subject || !email || !phone || !address || !dob) {
+        const { name, subject, email, phone, address, dob,college } = await req.json();
+        if (!name || !subject || !email || !phone || !address || !dob || !college) {
             return NextResponse.json(
                 { success: false, error: "Missing required fields: name, subject, email, phone, address, or dob" },
                 { status: 400 }
             );
         }
         const newCollege = new College({
-            name, subject, email, phone, address, dob
+            name, subject, email, phone, address, dob,college
         });
         await newCollege.save();
         return NextResponse.json(

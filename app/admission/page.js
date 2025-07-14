@@ -14,6 +14,7 @@ const AdmissionPage = () => {
     phone: '',
     address: '',
     dob: '',
+    college: '',
    
   });
 
@@ -34,9 +35,10 @@ const AdmissionPage = () => {
     // Here you would typically send the data to your backend
     console.log('Applying to:', selectedCollege.name);
     console.log('Form data:', formData);
-    alert(`Application submitted to ${selectedCollege.name}!`);
+  
 
-    axios.post('/api/apply', formData)
+    axios.post('/api/apply',
+      formData)
       .then(response => {
         console.log('Application successful:', response.data);
         alert('Application submitted successfully!');
@@ -166,18 +168,20 @@ const AdmissionPage = () => {
                   required
                 />
               </div>
-
-              {/* <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Passport Photo</label>
-                <input
-                  type="file"
-                  name="image"
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-md"
-                  accept="image/*"
-                  required
-                />
-              </div> */}
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">college</label>
+              <input
+                name="college"
+               
+                value={formData.college}
+             
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border text-gray-700 rounded-md"
+                rows={3}
+                required
+              />
+            </div>
+              
             </div>
 
             <div className="pt-4">
